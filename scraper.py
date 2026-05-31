@@ -20,8 +20,6 @@ SOURCE_URLS = [
     "https://ghfast.top/https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/v.txt",
     "https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
     "https://gt.1155555.xyz/https://raw.githubusercontent.com/shaoyouvip/free/refs/heads/main/base64.txt"
-    # ⬇️ 以后有新链接，按下面这种格式加在后面即可（注意前面要加逗号）：
-    # ,"https://你的新订阅链接.com/sub"
 ]
 
 # 3. 垃圾节点过滤黑名单（可自行添加别人节点里的广告词过滤掉）
@@ -53,8 +51,14 @@ def fetch_and_decode(url):
         return []
 
 def rename_node(link, index):
-    """高级智能节点重命名逻辑"""
-    new_name = f"{CUSTOM_REMARK_B64} {index:03d}"
+    
+   
+    try:
+        custom_remark = base64.b64decode(CUSTOM_REMARK_B64).decode('utf-8')
+    except Exception:
+        custom_remark = "Node" # 万一解码失败的保底名字
+        
+    new_name = f"{custom_remark} {index:03d}"
     
     if link.startswith("vmess://"):
         try:
